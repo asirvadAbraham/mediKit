@@ -4,8 +4,4 @@ html {
 body {
   height: 100%;
   overflow-y: hidden;
-
-  .root-element {
-    height: 100%;
-  }
 }
