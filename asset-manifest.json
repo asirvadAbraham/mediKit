@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/mediKit/static/css/main.be7e325d.css",
+    "main.css": "/mediKit/static/css/main.71d709e7.css",
     "main.js": "/mediKit/static/js/main.47608b61.js",
     "static/js/453.76c005e5.chunk.js": "/mediKit/static/js/453.76c005e5.chunk.js",
     "index.html": "/mediKit/index.html",
-    "main.be7e325d.css.map": "/mediKit/static/css/main.be7e325d.css.map",
+    "main.71d709e7.css.map": "/mediKit/static/css/main.71d709e7.css.map",
     "main.47608b61.js.map": "/mediKit/static/js/main.47608b61.js.map",
     "453.76c005e5.chunk.js.map": "/mediKit/static/js/453.76c005e5.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.be7e325d.css",
+    "static/css/main.71d709e7.css",
     "static/js/main.47608b61.js"
   ]
 }
