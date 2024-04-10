@@ -1,15 +1,17 @@
 {
   "files": {
     "main.css": "/mediKit/static/css/main.71d709e7.css",
-    "main.js": "/mediKit/static/js/main.47608b61.js",
+    "main.js": "/mediKit/static/js/main.b2b285c1.js",
     "static/js/453.76c005e5.chunk.js": "/mediKit/static/js/453.76c005e5.chunk.js",
+    "static/media/city-name-loading.gif": "/mediKit/static/media/city-name-loading.803f24369a085e35482e.gif",
+    "static/media/submit-button-loading.gif": "/mediKit/static/media/submit-button-loading.f28c706bab9bb33771e6.gif",
     "index.html": "/mediKit/index.html",
     "main.71d709e7.css.map": "/mediKit/static/css/main.71d709e7.css.map",
-    "main.47608b61.js.map": "/mediKit/static/js/main.47608b61.js.map",
+    "main.b2b285c1.js.map": "/mediKit/static/js/main.b2b285c1.js.map",
     "453.76c005e5.chunk.js.map": "/mediKit/static/js/453.76c005e5.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.71d709e7.css",
-    "static/js/main.47608b61.js"
+    "static/js/main.b2b285c1.js"
   ]
 }
