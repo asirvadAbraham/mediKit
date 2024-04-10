@@ -30,6 +30,10 @@ const Container = styled.div`
       justify-content: center;
       padding: 0.5%;
 
+      * {
+        font-size: 1.3vw;
+      }
+
       .content-left-inner-wrapper {
         height: 100%;
         display: flex;
@@ -73,9 +77,8 @@ const Container = styled.div`
           .submit-button {
             border: 1px solid #f77a52;
             color: #f77a52;
-            height: 40px;
+            height: 16%;
             line-height: 40px;
-            padding: 0px 40px 0px 15px;
             position: relative;
             overflow: hidden;
             transition: 0.4s all ease;
@@ -145,6 +148,10 @@ const Container = styled.div`
       justify-content: center;
       align-items: center;
       padding: 0.5%;
+
+      * {
+        font-size: 1.5vw;
+      }
 
       .doctor-detail-row {
         display: flex;
@@ -262,7 +269,11 @@ export const Medi = () => {
       <div className="content-container">
         <div className="content-left">
           <div className="content-left-inner-wrapper">
-            <form onSubmit={handleSubmit} className="content-left-form">
+            <form
+              onSubmit={handleSubmit}
+              className="content-left-form"
+              autoComplete="off"
+            >
               <div className="doctor-name-container">
                 <label>Doctor's Name</label>
                 <input
