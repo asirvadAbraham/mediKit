@@ -3,8 +3,8 @@ import axios from "axios";
 import styled from "@emotion/styled";
 
 type DataType = {
-  name: string;
-  pinCode: string;
+  doctor_name: string;
+  pin_code: string;
 };
 
 const Container = styled.div`
@@ -28,6 +28,7 @@ const Container = styled.div`
       display: flex;
       align-items: center;
       justify-content: center;
+      padding: 0.5%;
 
       .content-left-inner-wrapper {
         height: 100%;
@@ -60,8 +61,13 @@ const Container = styled.div`
             border-bottom: 1px solid #feca01;
           }
 
-          .city-name-container {
+          .city-name-and-loading-gif-container {
             height: 7%;
+            .city-name-loading-gif-wrapper {
+              height: 100%;
+              display: flex;
+              justify-content: center;
+            }
           }
 
           .submit-button {
@@ -73,6 +79,21 @@ const Container = styled.div`
             position: relative;
             overflow: hidden;
             transition: 0.4s all ease;
+            background: transparent;
+
+            .submit-button-loading-gif-wrapper {
+              display: flex;
+              justify-content: center;
+              height: 100%;
+            }
+
+            :disabled {
+              border-color: #a49a87;
+            }
+
+            :disabled:before {
+              color: #a49a87;
+            }
 
             :before {
               content: ">";
@@ -118,6 +139,29 @@ const Container = styled.div`
       background: #dee2dd;
       width: 40%;
       height: 100%;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 0.5%;
+
+      .doctor-detail-row {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        font-family: "Courier New", monospace;
+        font-weight: bolder;
+      }
+
+      .white-bg {
+        background: white;
+      }
+
+      .black-bg {
+        background: #252523;
+        color: white;
+      }
     }
   }
   .table-header {
@@ -143,23 +187,27 @@ const Container = styled.div`
 
 export const Medi = () => {
   const [formData, setFormData] = useState<DataType>({
-    name: "",
-    pinCode: "",
+    doctor_name: "",
+    pin_code: "",
   });
-  const [resultantData, setResultantData] = useState<DataType[]>([]);
+  const [doctorDetails, setDoctorDetails] = useState<DataType[]>([]);
+  const [showCityNameLoadingGif, setShowCityNameLoadingGif] = useState(false);
   const [cityName, setCityname] = useState("");
+  const [submitButtonDisabled, setSubmitButtonDisabled] = useState(false);
 
   const getCityName = async (pin: string) => {
     try {
       const result = await axios.post(
-        `https://asirvad.pythonanywhere.com/get_city_name`,
+        `${process.env.REACT_APP_BASE_URL}/get_city_name`,
         {
           pin_code: pin,
         }
       );
       const city = result?.data?.city_name;
       setCityname(city);
+      setShowCityNameLoadingGif(false);
     } catch (error) {
+      setShowCityNameLoadingGif(false);
       setCityname("");
       console.error("Error getting city code:", error);
     }
@@ -177,8 +225,9 @@ export const Medi = () => {
         const valueTrimmed = value.trim();
         const valueLength = valueTrimmed.length;
         if (valueLength <= 6) {
-          updatedValue = { ...updatedValue, pinCode: valueTrimmed };
+          updatedValue = { ...updatedValue, pin_code: valueTrimmed };
           if (valueLength === 6) {
+            setShowCityNameLoadingGif(true);
             void getCityName(valueTrimmed);
           } else {
             setCityname("");
@@ -186,22 +235,25 @@ export const Medi = () => {
         }
       }
     } else {
-      updatedValue = { ...updatedValue, name: e.target.value };
+      updatedValue = { ...updatedValue, doctor_name: e.target.value };
     }
     setFormData(updatedValue);
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleSubmit = async (event?: React.FormEvent<HTMLFormElement>) => {
+    setSubmitButtonDisabled(true);
+    event?.preventDefault();
     try {
       const result = await axios.post(
-        "http://localhost:5000/submit_data",
-        formData
+        `${process.env.REACT_APP_BASE_URL}/get_doctor_details`,
+        { ...formData }
       );
-      setResultantData(result.data as DataType[]);
+      setDoctorDetails((result?.data?.data_set || []) as DataType[]);
+      setSubmitButtonDisabled(false);
     } catch (error) {
       console.error("Error submitting data:", error);
       alert("Error submitting data. Please try again.");
+      setSubmitButtonDisabled(false);
     }
   };
 
@@ -216,7 +268,7 @@ export const Medi = () => {
                 <input
                   type="text"
                   name="name"
-                  value={formData.name}
+                  value={formData.doctor_name}
                   onChange={(e) => handleChange(e)}
                   className="doctor-name-input-field"
                 />
@@ -226,24 +278,54 @@ export const Medi = () => {
                 <label>Pincode</label>
                 <input
                   name="pin"
-                  value={formData.pinCode}
+                  value={formData.pin_code}
                   onChange={(e) => handleChange(e, true)}
                   required
                   className="pincode-input-field"
                 />
               </div>
 
-              <div className="city-name-container">
-                <label>{cityName}</label>
+              <div className="city-name-and-loading-gif-container">
+                {showCityNameLoadingGif ? (
+                  <div className="city-name-loading-gif-wrapper">
+                    <img
+                      src={require("../src/images/city-name-loading.gif")}
+                      alt="Loading city name"
+                    />
+                  </div>
+                ) : (
+                  <label>{cityName}</label>
+                )}
               </div>
 
-              <a href="/#" className="submit-button">
-                <span title="Submit">Submit</span>
-              </a>
+              <button className="submit-button" disabled={submitButtonDisabled}>
+                {submitButtonDisabled ? (
+                  <div className="submit-button-loading-gif-wrapper">
+                    <img
+                      src={require("../src/images/submit-button-loading.gif")}
+                      alt="Loading"
+                    />
+                  </div>
+                ) : (
+                  <span title="Submit">Submit</span>
+                )}
+              </button>
             </form>
           </div>
         </div>
-        <div className="content-right"></div>
+        <div className="content-right">
+          {doctorDetails?.length !== 0 &&
+            doctorDetails?.map((item, index) => (
+              <div
+                key={`${index}`}
+                className={`doctor-detail-row ${
+                  index % 2 === 0 ? "white-bg" : "black-bg"
+                }`}
+              >
+                {item?.doctor_name}
+              </div>
+            ))}
+        </div>
       </div>
     </Container>
   );
